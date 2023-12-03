@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "823488928648",
+    "project_id": "khang-project-724d7",
+    "storage_bucket": "khang-project-724d7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823488928648:android:de58e01085a8e5dfe1383d",
+        "android_client_info": {
+          "package_name": "com.example.app_shopping"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfz278c5iMTKQAH4AKs0cL53ccDLgPhmo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

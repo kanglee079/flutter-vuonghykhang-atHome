@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "894258455559",
+    "project_id": "flutter-login-rigister",
+    "storage_bucket": "flutter-login-rigister.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894258455559:android:735cb1438d04359c02b6a2",
+        "android_client_info": {
+          "package_name": "com.example.train_getapi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcPkmcO-WU5rraNY_Z5K0--HkqTVhqqsg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "iphone",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "79C91D31-749A-4FAD-B38D-E1DBDF524058"
+        },
+        {
+            "name": "ipad",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "F253A85D-C8F3-4F3C-8195-35A299A2BACD"
+        },
+    ],
+    "compounds": [
+        {
+            "name": "all",
+            "configurations": ["ipad", "iphone"]
+        }
+    ]
+}

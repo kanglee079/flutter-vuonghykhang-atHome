@@ -1,0 +1,42 @@
+[
+    {
+        "id": "c1",
+        "name": "Học Nấu Món Xào",
+        "image": "assets/images/category/c1.png"
+    },
+    {
+        "id": "c2",
+        "name": "Học Nấu Món Lẩu",
+        "image": "assets/images/category/c2.png"
+    },
+    {
+        "id": "c3",
+        "name": "Học Nấu Món Kho",
+        "image": "assets/images/category/c3.png"
+    },
+    {
+        "id": "c4",
+        "name": "Học Nấu Món Chiên",
+        "image": "assets/images/category/c4.png"
+    },
+    {
+        "id": "c5",
+        "name": "Học Nấu Món Bún",
+        "image": "assets/images/category/c5.png"
+    },
+    {
+        "id": "c6",
+        "name": "Học Nấu Món Canh",
+        "image": "assets/images/category/c6.png"
+    },
+    {
+        "id": "c7",
+        "name": "Học Nấu Món Xào",
+        "image": "assets/images/category/c1.png"
+    },
+    {
+        "id": "c8",
+        "name": "Học Nấu Món Lẩu",
+        "image": "assets/images/category/c2.png"
+    }
+]
