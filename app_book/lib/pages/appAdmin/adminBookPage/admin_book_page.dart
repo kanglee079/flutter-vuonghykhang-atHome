@@ -1,8 +1,10 @@
 import 'package:app_book/apps/route/route_name.dart';
+import 'package:app_book/manage/services/firebase_service.dart';
 import 'package:app_book/widgets/item_book.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../models/book_model.dart';
 import '../../../widgets/search_book.dart';
 
 class AdminBookPage extends StatelessWidget {
@@ -44,17 +46,39 @@ class AdminBookPage extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 10),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 10,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider(height: 15, color: Colors.white);
+                FutureBuilder(
+                  future: FirebaseService.getAllBooks(),
+                  builder: (context, AsyncSnapshot<List<Book>> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('Không có sách nào'));
+                    }
+
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: snapshot.data!.length,
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Divider(height: 15, color: Colors.white);
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        Book book = snapshot.data![index];
+                        return ItemBook(
+                          bookName: book.bookName,
+                          authorName: book.authorName,
+                          desc: book.desc,
+                        );
+                      },
+                    );
                   },
-                  itemBuilder: (BuildContext context, int index) {
-                    return const ItemBook();
-                  },
-                )
+                ),
               ],
             ),
           ),

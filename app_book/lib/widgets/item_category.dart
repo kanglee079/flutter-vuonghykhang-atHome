@@ -4,10 +4,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
 class ItemCategory extends StatelessWidget {
+  String? nameCategory;
   int index;
   ItemCategory({
     super.key,
     required this.index,
+    required this.nameCategory,
   });
 
   @override
@@ -44,8 +46,8 @@ class ItemCategory extends StatelessWidget {
           color: Colors.primaries[index],
           borderRadius: BorderRadius.circular(18),
         ),
-        child: const Center(
-          child: Text("Items"),
+        child: Center(
+          child: Text(nameCategory ?? ""),
         ),
       ),
     );

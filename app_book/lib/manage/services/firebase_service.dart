@@ -17,16 +17,20 @@ class FirebaseService {
     }, SetOptions(merge: true));
   }
 
-  static Future<List<String>> getAllCategories() async {
-    var doc = await _firestore.collection('Manage').doc('categories').get();
-    if (doc.exists && doc.data()!.containsKey('categoryList')) {
-      List<dynamic> categories = doc.data()!['categoryList'];
-      return categories.map((e) => e.toString()).toList();
-    }
-    return [];
+  static Stream<List<String>> getAllCategories() {
+    return _firestore
+        .collection('Manage')
+        .doc('categories')
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists && snapshot.data()!.containsKey('categoryList')) {
+        List<dynamic> categories = snapshot.data()!['categoryList'];
+        return categories.map((e) => e.toString()).toList();
+      }
+      return [];
+    });
   }
 
-  // Phương thức để thêm một cuốn sách vào một thể loại cụ thể
   static Future<void> addBookToCategory(String categoryName, Book book) async {
     if (categoryName.isEmpty) {
       print("Tên thể loại không thể rỗng");
@@ -39,14 +43,26 @@ class FirebaseService {
         .set(book.toMap());
   }
 
-  // Phương thức để lấy tất cả sách từ một thể loại
-  static Future<List<Book>> getBooksFromCategory(String categoryName) async {
-    var snapshot = await _firestore
+  static Stream<List<Book>> getBooksFromCategory(String categoryName) {
+    return _firestore
         .collection('Manage')
         .doc('categories')
         .collection(categoryName)
-        .get();
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Book.fromMap(doc.data())).toList());
+  }
 
-    return snapshot.docs.map((doc) => Book.fromMap(doc.data())).toList();
+  static Future<List<Book>> getAllBooks() async {
+    var categoriesSnapshot =
+        await _firestore.collection('Manage').doc('categories').get();
+    if (!categoriesSnapshot.exists) return [];
+
+    List<dynamic> categories = categoriesSnapshot.data()!['categoryList'];
+    var allBooksFutures =
+        categories.map((category) => getBooksFromCategory(category).first);
+
+    var allBooksLists = await Future.wait(allBooksFutures);
+    return allBooksLists.expand((books) => books).toList();
   }
 }

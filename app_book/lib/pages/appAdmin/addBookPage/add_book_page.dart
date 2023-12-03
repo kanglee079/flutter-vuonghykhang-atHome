@@ -15,28 +15,13 @@ class AddBookPage extends StatefulWidget {
 }
 
 class _AddBookPageState extends State<AddBookPage> {
-  List<String> categories = [];
   String? selectedValue;
-
-  @override
-  void initState() {
-    super.initState();
-    loadCategories();
-  }
-
-  void loadCategories() async {
-    List<String> categoryList = await FirebaseService.getAllCategories();
-    setState(() {
-      categories = categoryList;
-    });
-  }
+  TextEditingController nameBookController = TextEditingController();
+  TextEditingController nameAuthorController = TextEditingController();
+  TextEditingController descController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController nameBookController = TextEditingController();
-    TextEditingController nameAuthorController = TextEditingController();
-    TextEditingController descController = TextEditingController();
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -62,27 +47,48 @@ class _AddBookPageState extends State<AddBookPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ItemDropdown(
-                dropDown: DropdownSearch<String>(
-                  popupProps: const PopupProps.menu(
-                    showSelectedItems: true,
-                  ),
-                  items: categories,
-                  dropdownDecoratorProps: DropDownDecoratorProps(
-                    dropdownSearchDecoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                  onChanged: (newValue) {
-                    setState(() {
-                      selectedValue = newValue;
-                    });
-                    print(selectedValue);
-                  },
-                ),
+              StreamBuilder<List<String>>(
+                stream: FirebaseService.getAllCategories(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<String>> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return const Text('Chưa kết nối.');
+                    case ConnectionState.waiting:
+                      return const CircularProgressIndicator();
+                    case ConnectionState.active:
+                    case ConnectionState.done:
+                      if (snapshot.hasData) {
+                        List<String> categories = snapshot.data!;
+                        return ItemDropdown(
+                          dropDown: DropdownSearch<String>(
+                            popupProps: const PopupProps.menu(
+                              showSelectedItems: true,
+                            ),
+                            items: categories,
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              dropdownSearchDecoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide:
+                                      const BorderSide(color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                            onChanged: (newValue) {
+                              selectedValue = newValue;
+                            },
+                            selectedItem: selectedValue,
+                          ),
+                        );
+                      } else {
+                        return const Text('Không có dữ liệu.');
+                      }
+                  }
+                },
               ),
               const SizedBox(height: 20),
               CustomTextField(

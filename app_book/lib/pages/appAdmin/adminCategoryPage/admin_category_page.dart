@@ -3,10 +3,12 @@ import 'package:app_book/widgets/search_book.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../manage/services/firebase_service.dart';
 import '../../../widgets/item_category.dart';
 
 class AdminCategoryPage extends StatelessWidget {
   const AdminCategoryPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -44,19 +46,44 @@ class AdminCategoryPage extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 10),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 10,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider(height: 15, color: Colors.white);
+                StreamBuilder<List<String>>(
+                  stream: FirebaseService.getAllCategories(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<String>> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return const Text('Chưa kết nối.');
+                      case ConnectionState.waiting:
+                        return const CircularProgressIndicator();
+                      case ConnectionState.active:
+                      case ConnectionState.done:
+                        if (snapshot.hasData) {
+                          List<String> categories = snapshot.data!;
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: categories.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return const Divider(
+                                  height: 15, color: Colors.white);
+                            },
+                            itemBuilder: (BuildContext context, int index) {
+                              return ItemCategory(
+                                index: index,
+                                nameCategory: categories[index],
+                              );
+                            },
+                          );
+                        } else {
+                          return const Text('Không có dữ liệu.');
+                        }
+                    }
                   },
-                  itemBuilder: (BuildContext context, int index) {
-                    return ItemCategory(
-                      index: index,
-                    );
-                  },
-                )
+                ),
               ],
             ),
           ),

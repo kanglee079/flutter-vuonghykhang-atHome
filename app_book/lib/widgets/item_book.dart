@@ -4,8 +4,15 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
 class ItemBook extends StatelessWidget {
-  const ItemBook({
+  String? bookName;
+  String? authorName;
+  String? desc;
+
+  ItemBook({
     super.key,
+    required this.bookName,
+    required this.authorName,
+    required this.desc,
   });
 
   @override
@@ -61,15 +68,15 @@ class ItemBook extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Book Name",
+                    bookName ?? "",
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Text(
-                    "Author",
+                    authorName ?? "",
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
-                    "Ab vel quibusdam inventore qui non aut aut quia dolores. Sapiente dolorem rem in porro quisquam.",
+                    desc ?? "",
                     style: Theme.of(context).textTheme.titleSmall,
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
