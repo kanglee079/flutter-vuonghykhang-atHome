@@ -19,6 +19,8 @@ class _AddBookPageState extends State<AddBookPage> {
   TextEditingController nameBookController = TextEditingController();
   TextEditingController nameAuthorController = TextEditingController();
   TextEditingController descController = TextEditingController();
+  TextEditingController photoUrlController = TextEditingController();
+  TextEditingController pdfUrlController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +107,20 @@ class _AddBookPageState extends State<AddBookPage> {
               const SizedBox(height: 20),
               CustomTextField(
                 nameField: "Mô tả:",
-                icon: Icons.description,
+                icon: Icons.description_outlined,
                 controller: descController,
+              ),
+              const SizedBox(height: 20),
+              CustomTextField(
+                nameField: "Đường dẫn hình ảnh:",
+                icon: Icons.photo_library_outlined,
+                controller: photoUrlController,
+              ),
+              const SizedBox(height: 20),
+              CustomTextField(
+                nameField: "Đường dẫn PDF:",
+                icon: Icons.picture_as_pdf_outlined,
+                controller: pdfUrlController,
               ),
             ],
           ),
@@ -130,6 +144,8 @@ class _AddBookPageState extends State<AddBookPage> {
             nameBookController.clear();
             nameAuthorController.clear();
             descController.clear();
+            photoUrlController.clear();
+            pdfUrlController.clear();
             selectedValue = "";
           },
           child: Ink(

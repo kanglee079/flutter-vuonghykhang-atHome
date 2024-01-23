@@ -16,8 +16,10 @@ class InfoProvider extends ChangeNotifier {
 
   Stream<String> get imageUrlStream => _imageUrlController.stream;
 
-  void updateImageUrl(String? imageUrl) {
-    _imageUrlController.add(imageUrl!);
+  void updateImageUrl(
+      {String imageUrl =
+          "https://firebasestorage.googleapis.com/v0/b/khang-project-724d7.appspot.com/o/images%2Fmacdinh.jpg?alt=media&token=4f73b811-3a8f-4339-9dea-efa2b050c76c"}) {
+    _imageUrlController.add(imageUrl);
   }
 
   void getImageUrlForUser() async {
@@ -26,16 +28,16 @@ class InfoProvider extends ChangeNotifier {
           .ref()
           .child('images/${FirebaseAuth.instance.currentUser?.uid}.jpg');
       final String downloadURL = await ref.getDownloadURL();
-      updateImageUrl(downloadURL);
+      updateImageUrl(imageUrl: downloadURL);
     } catch (e) {
       if (e is FirebaseException && e.code == 'object-not-found') {
         final Reference defaultRef =
             FirebaseStorage.instance.ref().child('images/macdinh.jpg');
         final String defaultUrl = await defaultRef.getDownloadURL();
-        updateImageUrl(defaultUrl);
+        updateImageUrl(imageUrl: defaultUrl);
       } else {
         print('Lỗi khi lấy URL của hình ảnh: $e');
-        updateImageUrl(null);
+        updateImageUrl();
       }
     }
   }
